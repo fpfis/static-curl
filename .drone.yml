@@ -4,7 +4,7 @@ pipeline:
     commands:
       - yum install -y wget gcc make openssl-devel
       - mkdir curl
-      - wget https://curl.haxx.se/download/curl-7.61.0.tar.gz|tar --strip 1 -xzC curl
+      - wget -O - https://curl.haxx.se/download/curl-7.61.0.tar.gz|tar --strip 1 -xzC curl
       - cd curl
       - ./configure --disable-shared --enable-static
       - make -j2
