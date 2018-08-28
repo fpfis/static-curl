@@ -2,7 +2,7 @@ pipeline:
   build:
     image: centos:7
     commands:
-      - yum install -y gcc make openssl-devel
+      - yum install -y wget gcc make openssl-devel
       - mkdir curl
       - wget https://curl.haxx.se/download/curl-7.61.0.tar.gz|tar --strip 1 -xzC curl
       - cd curl
