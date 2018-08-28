@@ -15,6 +15,17 @@ pipeline:
       - make -j2
       - mv src/curl ../curl-el7-amd64
 
+  build-el5:
+    image: centos:5
+    commands:
+    - yum install -y wget gcc make openssl-devel
+    - rm curl -Rf && mkdir curl
+    - tar --strip 1 -f curl.tar.gz -xzC curl
+    - cd curl
+    - ./configure --disable-shared --enable-static
+    - make -j2
+    - mv src/curl ../curl-el6-amd64
+
   build-el6:
     image: centos:6
     commands:
