@@ -1,23 +1,26 @@
 pipeline:
+  download:
+    image: alpine
+    commands:
+      - wget https://curl.haxx.se/download/curl-7.61.0.tar.gz -O curl.tar.gz
+
   build-el7:
     image: centos:7
     commands:
       - yum install -y wget gcc make openssl-devel
       - mkdir curl
-      - wget -O - https://curl.haxx.se/download/curl-7.61.0.tar.gz|tar --strip 1 -xzC curl
+      - tar --strip 1 -f curl.tar.gz -xzC curl
       - cd curl
       - ./configure --disable-shared --enable-static
       - make -j2
       - mv src/curl ../curl-el7-amd64
 
-
-
   build-el6:
     image: centos:6
     commands:
       - yum install -y wget gcc make openssl-devel
-      - mkdir curl
-      - wget -O - https://curl.haxx.se/download/curl-7.61.0.tar.gz|tar --strip 1 -xzC curl
+      - rm curl -Rf && mkdir curl
+      - tar --strip 1 -f curl.tar.gz -xzC curl
       - cd curl
       - ./configure --disable-shared --enable-static
       - make -j2
