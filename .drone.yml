@@ -1,5 +1,5 @@
 pipeline:
-  build:
+  build-el7:
     image: centos:7
     commands:
       - yum install -y wget gcc make openssl-devel
@@ -8,11 +8,27 @@ pipeline:
       - cd curl
       - ./configure --disable-shared --enable-static
       - make -j2
+      - mv src/curl ../curl-el7-amd64
+
+
+
+  build-el6:
+    image: centos:6
+    commands:
+      - yum install -y wget gcc make openssl-devel
+      - mkdir curl
+      - wget -O - https://curl.haxx.se/download/curl-7.61.0.tar.gz|tar --strip 1 -xzC curl
+      - cd curl
+      - ./configure --disable-shared --enable-static
+      - make -j2
+      - mv src/curl ../curl-el6-amd64
 
   github-release:
     image: plugins/github-release
     secrets: [ github_token ]
-    files: "curl/src/curl"
+    files:
+      - curl-el7-amd64
+      - curl-el6-amd64
     checksum:
       - sha256
     when:
